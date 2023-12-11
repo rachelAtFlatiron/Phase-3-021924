@@ -171,14 +171,24 @@ pet_info = [
     }
 ]
 #✅ 5. loop through a range of 10 and print every number within the range
+for num in range(10): #starts at 0, is exclusive
+    print(num)
 
 #✅ 5a. loop through a range between 50 and 60 that iterates by 2 and print every number
+#range(start, stop, increment)
+for num in range(50, 60, 2):
+    print(num) #range is exclusive so 60 won't get printed
 
 #✅ 5b. Loop through the pet_info list and print every dictionary  
+for pet in pet_info:
+    print(pet)
 
 #✅ 6. Create a function that takes a list as an argument. 
     # The function should use a for loop to loop through the list and print every item in the list 
     # Invoke the function and pass it pet_names as an argument
+def print_pet_info(list):
+    for item in list:
+        print(item)
 
 #✅ 7. Create a function that takes a list as an argument.(simple example) 
     # The function should define a counter and set it to 0
@@ -186,6 +196,15 @@ pet_info = [
         # The loop will continue as long as the counter is less than the length of the list
         # Every loop should increase the count by 1
     # return the counter 
+#counter that will count the number of elements in pet_info
+#demonstration of while loops 
+def count(pet_info):
+    counter = 0 #stores how many elements are in pet_info
+    while(counter < len(pet_info)): #while we are NOT at the end of the list, keep iterating
+        counter += 1
+        print(counter)
+
+
 
 #✅ 8. Create a function that updates the age of a given pet
         # The function should take a list of dicts, name and age as parameters 
@@ -193,16 +212,50 @@ pet_info = [
         # Create a while loop. 
             # The loop will continue so long as the list does not contain a name matching the name param and the index is less then the length of the list
             # Every list will increase the index by 1
-        # If the dict containing a matching name is found update the items age with the new age 
+        # If the dict containing a matching name is found update the items age with the new age, return that dictionary 
         # else return 'pet not found'
+#pet_info list
+#name name of pet to find in pet_info
+#age is value to replace current age of current pet
+def replace_age(pet_info, name, age):
+    index = 0 #current element of array
+    #while name != pet_info[index]['name']
+    #iterate, increase index 
+    while(index < len(pet_info) - 1 and name != pet_info[index].get('name')):
+        index += 1
+    
+    #index .       len(pet_info)      
+    # 0                 3 
+    # 1                 3
+    # 2                 3
+    # 3                 3
+
+    if pet_info[index].get('name') == name:
+        pet_info[index]['age'] = age 
+        return pet_info[index]
+    else : 
+        return 'pet not found'
+
+#replace_age(pet_info, "spot", 2) # => { 'name': "spot", 'age': 2, 'breed': "boxer"}
+#replace_age(pet_info, "does_not_exist", 5) # => 'pet not found'
+
 
 # map like 
 #✅ 9. Use list comprehension to return a list containing every pet name from pet_info changed to uppercase
 
+#[ "what we want to replace with" for item in list ]
+pet_names_upper = [pet.get('name').upper() for pet in pet_info]
+
 # find like
 #✅ 9a. Use list comprehension to find a pet named spot
+# array.map(el => el + 1)
+plus_one = [el + 1 for el in numbers]
+find_pet = [el for el in pet_info if pet.get('name') == 'rocky']
 
 # filter like
 #✅ 9b. Use list comprehension to find all of the pets under 3 years old
+younger = [el for el in pet_info if el.get('age') < 3]
 
 #✅ 9c. Create a generator expression matching the filter above. Compare and contrast the generator to the list comprehension. 
+
+ipdb.set_trace()
