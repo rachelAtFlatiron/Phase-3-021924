@@ -8,13 +8,14 @@ SELECT * FROM owners;
 CREATE TABLE pets(
     id INTEGER PRIMARY KEY,
     name TEXT,
-    owner_id INTEGER,
+    owner_id INTEGER, 
     birthdate INTEGER,
     breed TEXT,
     favorite_treats TEXT,
     last_fed_at DATETIME, -- includes hour and minute
     last_walked_at DATETIME,
         FOREIGN KEY(owner_id) REFERENCES owners(id)
+        -- similar to Pet.owner = some owner instance
 );
 
 -- ✅ 2a. Remove owners table
@@ -107,20 +108,80 @@ FROM pets JOIN owners
 ON pets.owner_id = owners.id;
 
 -- ✅ 8b. Many to many: create staff table 
+CREATE TABLE staff(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    phone INTEGER
+)
 
 -- ✅ 8c. Many to many: create appointments table
+CREATE TABLE appointments(
+    id INTEGER PRIMARY KEY,
+    time DATETIME,
+    request TEXT,
+    pet_id INTEGER,
+    staff_id INTEGER,
+    FOREIGN KEY(staff_id) REFERENCES staff(id),
+    FOREIGN KEY(pet_id) REFERENCES pets(id)
+)
 
 -- ✅ 9. Seed data
 
 -- ✅ 9a. Create two staff members using ChatGPT
-
+INSERT INTO staff (name, email, phone) VALUES
+    ('Alice Wonderland', 'alice.wonderland@gmail.com', 1234567890),
+    ('Bob Marley', 'bob.marley@gmail.com', 9876543210);
 -- ✅ 9b. Create six appointments using ChatGPT
+-- Instance 1
+INSERT INTO appointments (time, request, pet_id, staff_id)
+VALUES ('2023-09-02 09:00:00', 'Regular checkup', 1, 1);
 
+-- Instance 2
+INSERT INTO appointments (time, request, pet_id, staff_id)
+VALUES ('2023-09-02 10:30:00', 'Vaccination', 2, 1);
+
+-- Instance 3
+INSERT INTO appointments (time, request, pet_id, staff_id)
+VALUES ('2023-09-03 15:15:00', 'Dental cleaning', 3, 1);
+
+-- Instance 4
+INSERT INTO appointments (time, request, pet_id, staff_id)
+VALUES ('2023-09-04 11:45:00', 'Emergency visit', 4, 2);
+
+-- Instance 5
+INSERT INTO appointments (time, request, pet_id, staff_id)
+VALUES ('2023-09-05 14:00:00', 'Spaying surgery', 5, 2);
+
+-- Instance 6
+INSERT INTO appointments (time, request, pet_id, staff_id)
+VALUES ('2023-09-06 16:30:00', 'Grooming', 6, 2);
 -- ✅ 10. Join tables
 
 -- ✅ 10a. Basic join
+SELECT 
+    pets.name as 'pet',
+    staff.name as 'doctor',
+    appointments.request,
+    appointments.time
+FROM 
+appointments JOIN pets 
+    ON appointments.pet_id = pets.id 
+JOIN staff 
+    ON appointments.staff_id = staff.id
 
 -- ✅ 10b. Basic join with specific values
+SELECT 
+    pets.name as 'pet',
+    staff.name as 'doctor',
+    appointments.request,
+    appointments.time
+FROM 
+appointments JOIN pets 
+    ON appointments.pet_id = pets.id 
+JOIN staff 
+    ON appointments.staff_id = staff.id
+    AND staff.name = 'Alice Wonderland';
 
 -- ✅ 10c. Inner join
 
